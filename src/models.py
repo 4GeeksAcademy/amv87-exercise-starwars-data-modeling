@@ -11,13 +11,11 @@ class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     username = Column(String(250), nullable=False)
-    email = Column(String(250), nullable=False)
     password = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
     subscription_date = Column(String(250), nullable=False)
     name = Column(String(250), nullable=False)
     surname = Column(String(250), nullable=False)
-    favorite_characters = relationship('FavoriteCharacter', back_populates='character')
-    favorite_planets = relationship('FavoritePlanet', back_populates='planet')
 
 class Character(Base):
     __tablename__ = 'character'
@@ -30,15 +28,14 @@ class Character(Base):
     eye_color = Column(String(250), nullable=False)
     birth_year = Column(String(250), nullable=False)
     gender = Column(String(250), nullable=False)
-    favorite_characters = relationship('FavoriteCharacter', back_populates='character')
 
 class FavoriteCharacters(Base):
     __tablename__ = 'favorite_characters'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship('User', back_populates='favorite_characters')
+    user = relationship(User)
     character_id = Column(Integer, ForeignKey('character.id'))
-    character = relationship('Character', back_populates='favorite_characters')
+    character = relationship(Character)
 
 class Planet(Base):
     __tablename__ = 'planet'
@@ -52,14 +49,13 @@ class Planet(Base):
     terrain = Column(String(250), nullable=False)
     surface_water = Column(String(250), nullable=False)
     population = Column(String(250), nullable=False)
-    favorite_planets = relationship('FavoritePlanet', back_populates='planet')
 
 class FavoritePlanets(Base):
     __tablename__ = 'favorite_planets'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship('User', back_populates='favorite_planets')
+    user = relationship(User)
     planet_id = Column(Integer, ForeignKey('planet.id'))
-    planet = relationship('Planet', back_populates='favorite_planets')
+    planet = relationship(Planet)
 
 render_er(Base, 'diagram.png')
